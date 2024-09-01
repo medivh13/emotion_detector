@@ -50,7 +50,7 @@ async def websocket_endpoint(websocket: WebSocket):
             img = np.expand_dims(img, axis=0)
             # Make a prediction using the trained model
             prediction = model.predict(img)
-            print(prediction)
+            
             # Get the index of the highest probability class
             predicted_emotion_index = np.argmax(prediction)
             # Map the index to the corresponding emotion label
