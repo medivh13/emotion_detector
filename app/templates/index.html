@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Emotion Detection</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Real-Time Emotion Detection</h1>
+        <div class="video-container">
+            <video id="video" width="640" height="480" autoplay></video>
+        </div>
+        <div class="emotion-display">
+            <p id="emotion">Waiting for emotion detection...</p>
+        </div>
+    </div>
+
+    <script>
+        const video = document.getElementById('video');
+        const emotionDisplay = document.getElementById('emotion');
+        let socket;
+
+        // Function to initialize WebSocket connection
+        function initWebSocket() {
+            socket = new WebSocket("ws://localhost:8000/ws");
+
+            socket.onopen = () => {
+                console.log("WebSocket connection established");
+            };
+
+            socket.onmessage = function (event) {
+                let emotion = event.data;
+                emotionDisplay.textContent = "Detected Emotion: " + emotion;
+            };
+
+            socket.onclose = () => {
+                console.log("WebSocket connection closed");
+                // Attempt to reconnect
+                setTimeout(initWebSocket, 5000);
+            };
+
+            socket.onerror = (error) => {
+                console.error("WebSocket error: ", error);
+                socket.close();
+            };
+        }
+
+        // Initialize WebSocket
+        initWebSocket();
+
+        // Access the webcam
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                video.srcObject = stream;
+                video.play();
+            })
+            .catch(error => {
+                console.error("Error accessing webcam: ", error);
+            });
+
+        video.addEventListener('play', () => {
+            const canvas = document.createElement('canvas');
+            canvas.width = video.width;
+            canvas.height = video.height;
+            const context = canvas.getContext('2d');
+
+            setInterval(() => {
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                canvas.toBlob(blob => {
+                    if (socket.readyState === WebSocket.OPEN) {
+                        socket.send(blob);
+                    }
+                }, 'image/jpeg', 0.5);
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

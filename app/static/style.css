@@ -1,0 +1,80 @@
+/* Reset some default styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.video-container {
+    margin-bottom: 20px;
+}
+
+video {
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.emotion-display {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #555;
+}
+
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+        padding: 10px;
+    }
+
+    video {
+        width: 100%;
+    }
+}
+
+.box {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
+}
+
+.video-container video {
+    border-radius: 0.5rem;
+}
+
+.emotion-display p {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #007bff;
+}
+
+.card {
+    border: none;
+    border-radius: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card-body {
+    padding: 2rem;
+}
